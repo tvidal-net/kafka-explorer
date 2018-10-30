@@ -1,0 +1,69 @@
+buildscript {
+    ext.kotlin_version = '1.3.0'
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+group 'net.tvidal'
+version '0.1-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+apply plugin: 'kotlin'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    kotlinOptions {
+        jvmTarget = project.targetCompatibility
+    }
+}
+
+compileKotlin {
+    kotlinOptions {
+        allWarningsAsErrors = true
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    // Kotlin
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+
+    // Kafka
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: kafka_version
+
+    // Tornado FX
+    implementation group: 'no.tornado', name: 'tornadofx', version: tornadofx_version
+
+    // Tests
+    testImplementation group: 'io.mockk', name: 'mockk', version: mockk_version
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit_version
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junit_version
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junit_version
+}
+
+jar {
+    manifest {
+        attributes(
+                'Implementation-Vendor': project.group,
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+        )
+    }
+}
