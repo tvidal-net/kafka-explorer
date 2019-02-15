@@ -4,13 +4,17 @@ import javafx.scene.image.Image
 import tornadofx.*
 import uk.tvidal.kafka.explorer.view.TopicsView
 
-class KafkaExplorer : App(Image("/kafka.png"), TopicsView::class, Styles::class) {
+class KafkaExplorer : App(Image("/kafka.png"), TopicsView::class) {
 
     init {
+        FX.stylesheets += style.toExternalForm()
         reloadStylesheetsOnFocus()
     }
 
     companion object {
+
+        private val style = KafkaExplorer::class.java
+            .getResource("/style.css")
 
         @JvmStatic
         fun main(args: Array<String>) {

@@ -52,13 +52,11 @@ class KafkaClientService(broker: KafkaBroker) : KafkaService {
 
     override fun unsubscribe() = consumer.unsubscribe()
 
-    override fun poll(): List<KafkaMessage> {
-        val assignment = consumer.assignment()
-        return if (assignment.isNotEmpty()) {
-            val records = consumer.poll(pollTimeout)
-            records.map(::KafkaMessage)
-        } else emptyList()
-    }
+    override fun poll(): List<KafkaMessage> = if (consumer.assignment().isNotEmpty()) {
+        consumer
+            .poll(pollTimeout)
+            .map(::KafkaMessage)
+    } else emptyList()
 
     override fun close() {
         consumer.close(closeTimeout)

@@ -35,14 +35,12 @@ class TopicsView : AbstractView("Kafka Explorer") {
 
     private fun EventTarget.stream() = listview(kafka.stream) {
 
-        items.onChange { scrollToBottom() }
-
         cellFormat {
             graphic = vbox {
                 hbox {
                     boldText("${it.offset} ")
+                    it.key?.let { key -> text("(key: $key) ") }
                     fadedText(it.timestamp.toString())
-                    it.key?.let { key -> text(" (key: $key)") }
                 }
                 text(it.value) {
                     wrappingWidthProperty().bind(
@@ -55,7 +53,6 @@ class TopicsView : AbstractView("Kafka Explorer") {
         setOnKeyReleased {
             if (it.code == KeyCode.ESCAPE) {
                 selectionModel.clearSelection()
-                scrollToBottom()
             }
         }
     }
