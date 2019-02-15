@@ -1,19 +1,25 @@
 package uk.tvidal.kafka.explorer
 
+import javafx.scene.paint.Color
 import tornadofx.*
 
 class Styles : Stylesheet() {
 
     companion object {
 
-        val borderPadding by cssclass()
+        val border by cssclass()
+        val faded by cssclass()
 
-        val defaultPadding = box(36.px)
+        val defaultPadding = box(8.px)
     }
 
     init {
-        borderPadding {
+        border {
             padding = defaultPadding
+        }
+
+        faded {
+            fill = Color.GRAY
         }
     }
 }

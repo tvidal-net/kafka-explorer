@@ -11,6 +11,7 @@ import uk.tvidal.kafka.explorer.model.KafkaTopicInfo
 import uk.tvidal.kafka.explorer.threadFactory
 import java.util.concurrent.Executors.newSingleThreadScheduledExecutor
 import java.util.concurrent.TimeUnit.MILLISECONDS
+import kotlin.math.max
 
 class KafkaController : Controller() {
 
@@ -41,14 +42,16 @@ class KafkaController : Controller() {
         kafka.close()
         kafka = KafkaClientService(broker)
         log.info { "Connected to $broker" }
-        topics.asyncItems { kafka.list() }
+        val data = kafka.list()
+        runLater { topics.setAll(data) }
     }
 
     private fun subscribe(topic: KafkaTopicInfo?) {
         kafka.unsubscribe()
         log.info { "subscribing to $topic" }
         topic?.run {
-            kafka.subscribe(name, partition, earliest)
+            val offset = max(latest - messageCount, earliest)
+            kafka.subscribe(name, partition, offset)
         }
         poll()
     }
@@ -64,5 +67,6 @@ class KafkaController : Controller() {
 
     companion object {
         private const val delay = 333L
+        const val messageCount = 1000
     }
 }

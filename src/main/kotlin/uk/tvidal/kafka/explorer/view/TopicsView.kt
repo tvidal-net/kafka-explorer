@@ -3,7 +3,7 @@ package uk.tvidal.kafka.explorer.view
 import javafx.event.EventTarget
 import javafx.geometry.Pos.CENTER
 import tornadofx.*
-import uk.tvidal.kafka.explorer.Styles.Companion.borderPadding
+import uk.tvidal.kafka.explorer.Styles
 import uk.tvidal.kafka.explorer.controller.KafkaController
 import uk.tvidal.kafka.explorer.model.KafkaBroker
 
@@ -18,15 +18,22 @@ class TopicsView : View("Kafka Explorer") {
         }
     }
 
-    private fun EventTarget.topics() = vbox {
-        addClass(borderPadding)
-        listview(kafka.topics) {
-            kafka.topic.bind(selectionModel.selectedItemProperty())
+    private fun EventTarget.topics() = borderpane {
+
+        top = hbox(alignment = CENTER) {
+            addClass(Styles.border)
+            connectButton()
         }
 
-        hbox(8, CENTER) {
-            alignment = CENTER
-            connectButton()
+        center = listview(kafka.topics) {
+            kafka.topic.bind(selectionModel.selectedItemProperty())
+
+            cellFormat {
+                graphic = borderpane {
+                    left = text("${it.name}:${it.partition}")
+                    right = fadedText("${it.earliest} .. ${it.latest}")
+                }
+            }
         }
     }
 
@@ -34,10 +41,24 @@ class TopicsView : View("Kafka Explorer") {
         items.onChange {
             scrollTo(items.size - 1)
         }
+
+        cellFormat {
+            graphic = hbox {
+                fadedText(it.timestamp.toString())
+                it.key?.let { key -> text(" (key: $key)") }
+                text(" [${it.offset}] ${it.value}")
+            }
+        }
     }
 
     override val root = borderpane {
+        setPrefSize(1024.0, 768.0)
+
         left = topics()
         center = stream()
+    }
+
+    private fun EventTarget.fadedText(text: String) = text(text) {
+        addClass(Styles.faded)
     }
 }

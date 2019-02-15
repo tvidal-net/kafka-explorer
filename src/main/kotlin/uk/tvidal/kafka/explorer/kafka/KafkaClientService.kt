@@ -31,14 +31,17 @@ class KafkaClientService(broker: KafkaBroker) : KafkaService {
         val topics = externalTopics.map { TopicPartition(it.topic(), it.partition()) }
         val earliestOffsets = consumer.beginningOffsets(topics)
         val latestOffsets = consumer.endOffsets(topics)
-        return topics.map {
-            KafkaTopicInfo(
-                name = it.topic(),
-                partition = it.partition(),
-                latest = latestOffsets[it] ?: EMPTY_OFFSET,
-                earliest = earliestOffsets[it] ?: EMPTY_OFFSET
-            )
-        }
+        return topics
+            .asSequence()
+            .map {
+                KafkaTopicInfo(
+                    name = it.topic(),
+                    partition = it.partition(),
+                    latest = latestOffsets[it] ?: EMPTY_OFFSET,
+                    earliest = earliestOffsets[it] ?: EMPTY_OFFSET
+                )
+            }.sorted()
+            .toList()
     }
 
     override fun subscribe(topic: String, partition: Int, offset: Long) {
