@@ -2,6 +2,7 @@ package uk.tvidal.kafka.explorer.view
 
 import javafx.event.EventTarget
 import javafx.geometry.Pos.CENTER
+import javafx.scene.text.FontWeight.BOLD
 import tornadofx.*
 import uk.tvidal.kafka.explorer.Styles
 import uk.tvidal.kafka.explorer.controller.KafkaController
@@ -43,10 +44,17 @@ class TopicsView : View("Kafka Explorer") {
         }
 
         cellFormat {
-            graphic = hbox {
-                fadedText(it.timestamp.toString())
-                it.key?.let { key -> text(" (key: $key)") }
-                text(" [${it.offset}] ${it.value}")
+            graphic = vbox {
+                hbox {
+                    boldText("${it.offset} ")
+                    fadedText(it.timestamp.toString())
+                    it.key?.let { key -> text(" (key: $key)") }
+                }
+                text(it.value) {
+                    wrappingWidthProperty().bind(
+                        this@listview.widthProperty().minus(48)
+                    )
+                }
             }
         }
     }
@@ -60,5 +68,11 @@ class TopicsView : View("Kafka Explorer") {
 
     private fun EventTarget.fadedText(text: String) = text(text) {
         addClass(Styles.faded)
+    }
+
+    private fun EventTarget.boldText(text: String) = text(text) {
+        style {
+            fontWeight = BOLD
+        }
     }
 }

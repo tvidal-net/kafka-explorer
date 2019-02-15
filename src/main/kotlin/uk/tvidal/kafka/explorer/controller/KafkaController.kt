@@ -60,7 +60,11 @@ class KafkaController : Controller() {
         do {
             val messages = kafka.poll()
             if (!messages.isEmpty()) {
-                runLater { stream += messages }
+                runLater {
+                    val over = max(stream.size + messages.size - messageCount + 1, 0)
+                    if (over > 0) stream.remove(0, over - 1)
+                    stream += messages
+                }
             }
         } while (!messages.isEmpty())
     }

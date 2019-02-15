@@ -19,7 +19,7 @@ class Styles : Stylesheet() {
         }
 
         faded {
-            fill = Color.GRAY
+            fill = Color.LIGHTGRAY
         }
     }
 }
