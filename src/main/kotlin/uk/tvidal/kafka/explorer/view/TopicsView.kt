@@ -1,7 +1,8 @@
 package uk.tvidal.kafka.explorer.view
 
 import javafx.event.EventTarget
-import javafx.geometry.Pos.CENTER
+import javafx.scene.control.ListView
+import javafx.scene.input.KeyCode
 import javafx.scene.text.FontWeight.BOLD
 import tornadofx.*
 import uk.tvidal.kafka.explorer.Styles
@@ -12,36 +13,31 @@ class TopicsView : View("Kafka Explorer") {
 
     val kafka: KafkaController by inject()
 
-    private fun EventTarget.connectButton() = button("Connect") {
-        action {
-            val broker = KafkaBroker("127.0.0.1", 9092)
-            kafka.broker.set(broker)
-        }
+    override val root = borderpane {
+        setPrefSize(1024.0, 768.0)
+
+        left = topics()
+        center = stream()
     }
 
-    private fun EventTarget.topics() = borderpane {
+    init {
+        kafka.broker = KafkaBroker()
+    }
 
-        top = hbox(alignment = CENTER) {
-            addClass(Styles.border)
-            connectButton()
-        }
+    private fun EventTarget.topics() = listview(kafka.topics) {
+        kafka.topic.bind(selectionModel.selectedItemProperty())
 
-        center = listview(kafka.topics) {
-            kafka.topic.bind(selectionModel.selectedItemProperty())
-
-            cellFormat {
-                graphic = borderpane {
-                    left = text("${it.name}:${it.partition}")
-                    right = fadedText("${it.earliest} .. ${it.latest}")
-                }
+        cellFormat {
+            graphic = borderpane {
+                left = text("${it.name}:${it.partition}")
+                right = fadedText("${it.earliest} .. ${it.latest}")
             }
         }
     }
 
     private fun EventTarget.stream() = listview(kafka.stream) {
-        items.onChange {
-            scrollTo(items.size - 1)
-        }
+
+        items.onChange { scrollToBottom() }
 
         cellFormat {
             graphic = vbox {
@@ -57,13 +53,13 @@ class TopicsView : View("Kafka Explorer") {
                 }
             }
         }
-    }
 
-    override val root = borderpane {
-        setPrefSize(1024.0, 768.0)
-
-        left = topics()
-        center = stream()
+        setOnKeyReleased {
+            if (it.code == KeyCode.ESCAPE) {
+                selectionModel.clearSelection()
+                scrollToBottom()
+            }
+        }
     }
 
     private fun EventTarget.fadedText(text: String) = text(text) {
@@ -74,5 +70,10 @@ class TopicsView : View("Kafka Explorer") {
         style {
             fontWeight = BOLD
         }
+    }
+
+    private fun ListView<*>.scrollToBottom() {
+        if (selectionModel.isEmpty)
+            scrollTo(items.size - 1)
     }
 }

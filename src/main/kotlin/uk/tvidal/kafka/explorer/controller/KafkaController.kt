@@ -18,7 +18,9 @@ class KafkaController : Controller() {
     private val executor = newSingleThreadScheduledExecutor(threadFactory("KafkaController"))
     private var kafka = KafkaService.NoOp
 
-    val broker: ObjectProperty<KafkaBroker> = SimpleObjectProperty()
+    val brokerProperty: ObjectProperty<KafkaBroker> = SimpleObjectProperty()
+    var broker: KafkaBroker? by brokerProperty
+
     val topics = observableList<KafkaTopicInfo>()
 
     val topic: ObjectProperty<KafkaTopicInfo> = SimpleObjectProperty()
@@ -26,8 +28,8 @@ class KafkaController : Controller() {
 
     init {
         executor.scheduleAtFixedRate(::poll, delay, delay, MILLISECONDS)
-        broker.onChange { broker ->
-            broker?.let {
+        brokerProperty.onChange {
+            it?.let {
                 topics.clear()
                 executor.execute { connect(it) }
             }
@@ -41,14 +43,12 @@ class KafkaController : Controller() {
     private fun connect(broker: KafkaBroker) {
         kafka.close()
         kafka = KafkaClientService(broker)
-        log.info { "Connected to $broker" }
         val data = kafka.list()
         runLater { topics.setAll(data) }
     }
 
     private fun subscribe(topic: KafkaTopicInfo?) {
         kafka.unsubscribe()
-        log.info { "subscribing to $topic" }
         topic?.run {
             val offset = max(latest - messageCount, earliest)
             kafka.subscribe(name, partition, offset)
