@@ -1,9 +1,9 @@
 package uk.tvidal.kafka.explorer
 
 import tornadofx.*
-import uk.tvidal.kafka.explorer.view.ConnectView
+import uk.tvidal.kafka.explorer.view.TopicsView
 
-class KafkaExplorerApp : App(ConnectView::class, Styles::class) {
+class KafkaExplorerApp : App(TopicsView::class, Styles::class) {
 
     init {
         reloadStylesheetsOnFocus()

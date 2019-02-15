@@ -7,37 +7,33 @@ import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.TopicPartition
 import uk.tvidal.kafka.explorer.codec.NullCodec
 import uk.tvidal.kafka.explorer.codec.StringCodec
+import uk.tvidal.kafka.explorer.kafka.KafkaService.Companion.EMPTY_OFFSET
 import uk.tvidal.kafka.explorer.model.KafkaBroker
-import uk.tvidal.kafka.explorer.model.KafkaOffset
+import uk.tvidal.kafka.explorer.model.KafkaMessage
+import uk.tvidal.kafka.explorer.model.KafkaTopicInfo
 import java.time.Duration
 
 class KafkaClientService(broker: KafkaBroker) : KafkaService {
-
-    companion object {
-        const val EMPTY_OFFSET = -1L
-        private val timeout = Duration.ofSeconds(1L)
-    }
 
     private val consumer: Consumer<Nothing?, String> = KafkaConsumer(
         mapOf(
             CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG to broker.toString(),
             ConsumerConfig.GROUP_ID_CONFIG to "kafka-explorer",
-            ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to false,
-            ConsumerConfig.MAX_POLL_RECORDS_CONFIG to 1
+            ConsumerConfig.MAX_POLL_RECORDS_CONFIG to 100
         ),
         NullCodec,
         StringCodec
     )
 
-    override fun list(): Collection<KafkaOffset> {
+    override fun list(): List<KafkaTopicInfo> {
         val info = consumer.listTopics()?.values?.flatten() ?: emptyList()
         val externalTopics = info.filterNot { it.topic().startsWith("__") }
         val topics = externalTopics.map { TopicPartition(it.topic(), it.partition()) }
         val earliestOffsets = consumer.beginningOffsets(topics)
         val latestOffsets = consumer.endOffsets(topics)
         return topics.map {
-            KafkaOffset(
-                topic = it.topic(),
+            KafkaTopicInfo(
+                name = it.topic(),
                 partition = it.partition(),
                 latest = latestOffsets[it] ?: EMPTY_OFFSET,
                 earliest = earliestOffsets[it] ?: EMPTY_OFFSET
@@ -45,7 +41,28 @@ class KafkaClientService(broker: KafkaBroker) : KafkaService {
         }
     }
 
+    override fun subscribe(topic: String, partition: Int, offset: Long) {
+        val topicPartition = TopicPartition(topic, partition)
+        consumer.assign(listOf(topicPartition))
+        consumer.seek(topicPartition, offset)
+    }
+
+    override fun unsubscribe() = consumer.unsubscribe()
+
+    override fun poll(): List<KafkaMessage> {
+        val assignment = consumer.assignment()
+        return if (assignment.isNotEmpty()) {
+            val records = consumer.poll(pollTimeout)
+            records.map(::KafkaMessage)
+        } else emptyList()
+    }
+
     override fun close() {
-        consumer.close(timeout)
+        consumer.close(closeTimeout)
+    }
+
+    companion object {
+        private val pollTimeout = Duration.ofMillis(100L)
+        private val closeTimeout = Duration.ofSeconds(1L)
     }
 }

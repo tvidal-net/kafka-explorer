@@ -1,12 +1,16 @@
 package uk.tvidal.kafka.explorer
 
-import java.lang.Thread.currentThread
-import java.time.Instant
-import java.util.Objects.toString
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.atomic.AtomicInteger
 
-inline fun log(block: () -> Any?) {
-    val now = Instant.now()
-    val thread = currentThread().name
-    val message = toString(block())
-    println("$now [$thread] $message")
+fun threadFactory(nameFormat: String): ThreadFactory = object : ThreadFactory {
+    private val counter = AtomicInteger()
+    override fun newThread(command: Runnable): Thread {
+        val count = counter.incrementAndGet()
+        val name = nameFormat.format(count)
+        return Thread(command, name).apply {
+            isDaemon = true
+            setUncaughtExceptionHandler { _, e -> e.printStackTrace() }
+        }
+    }
 }
