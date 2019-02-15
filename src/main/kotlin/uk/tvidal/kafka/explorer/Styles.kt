@@ -1,6 +1,7 @@
 package uk.tvidal.kafka.explorer
 
 import javafx.scene.paint.Color
+import javafx.scene.text.FontWeight.BOLD
 import tornadofx.*
 
 class Styles : Stylesheet() {
@@ -9,6 +10,7 @@ class Styles : Stylesheet() {
 
         val border by cssclass()
         val faded by cssclass()
+        val bold by cssclass()
 
         val defaultPadding = box(8.px)
     }
@@ -20,6 +22,10 @@ class Styles : Stylesheet() {
 
         faded {
             fill = Color.LIGHTGRAY
+        }
+
+        bold {
+            fontWeight = BOLD
         }
     }
 }

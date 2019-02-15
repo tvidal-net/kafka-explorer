@@ -1,15 +1,12 @@
 package uk.tvidal.kafka.explorer.view
 
 import javafx.event.EventTarget
-import javafx.scene.control.ListView
 import javafx.scene.input.KeyCode
-import javafx.scene.text.FontWeight.BOLD
 import tornadofx.*
-import uk.tvidal.kafka.explorer.Styles
 import uk.tvidal.kafka.explorer.controller.KafkaController
 import uk.tvidal.kafka.explorer.model.KafkaBroker
 
-class TopicsView : View("Kafka Explorer") {
+class TopicsView : AbstractView("Kafka Explorer") {
 
     val kafka: KafkaController by inject()
 
@@ -61,20 +58,5 @@ class TopicsView : View("Kafka Explorer") {
                 scrollToBottom()
             }
         }
-    }
-
-    private fun EventTarget.fadedText(text: String) = text(text) {
-        addClass(Styles.faded)
-    }
-
-    private fun EventTarget.boldText(text: String) = text(text) {
-        style {
-            fontWeight = BOLD
-        }
-    }
-
-    private fun ListView<*>.scrollToBottom() {
-        if (selectionModel.isEmpty)
-            scrollTo(items.size - 1)
     }
 }
