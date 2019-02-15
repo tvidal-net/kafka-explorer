@@ -1,10 +1,10 @@
-package net.tvidal.kafka.explorer.view
+package uk.tvidal.kafka.explorer.view
 
 import javafx.event.EventTarget
 import javafx.geometry.Pos.CENTER
-import net.tvidal.kafka.explorer.Styles.Companion.borderPadding
-import net.tvidal.kafka.explorer.model.Broker
 import tornadofx.*
+import uk.tvidal.kafka.explorer.Styles.Companion.borderPadding
+import uk.tvidal.kafka.explorer.model.Broker
 
 class ConnectView : View("Kafka Connection") {
 

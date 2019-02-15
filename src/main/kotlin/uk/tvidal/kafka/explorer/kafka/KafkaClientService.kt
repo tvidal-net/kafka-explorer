@@ -1,14 +1,14 @@
-package net.tvidal.kafka.explorer.kafka
+package uk.tvidal.kafka.explorer.kafka
 
-import net.tvidal.kafka.explorer.codec.NullCodec
-import net.tvidal.kafka.explorer.codec.StringCodec
-import net.tvidal.kafka.explorer.model.KafkaBroker
-import net.tvidal.kafka.explorer.model.KafkaOffset
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.TopicPartition
+import uk.tvidal.kafka.explorer.codec.NullCodec
+import uk.tvidal.kafka.explorer.codec.StringCodec
+import uk.tvidal.kafka.explorer.model.KafkaBroker
+import uk.tvidal.kafka.explorer.model.KafkaOffset
 import java.time.Duration
 
 class KafkaClientService(broker: KafkaBroker) : KafkaService {

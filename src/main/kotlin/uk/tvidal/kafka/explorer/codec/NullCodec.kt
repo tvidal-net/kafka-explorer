@@ -1,4 +1,4 @@
-package net.tvidal.kafka.explorer.codec
+package uk.tvidal.kafka.explorer.codec
 
 object NullCodec : AbstractCodec<Nothing?>() {
 

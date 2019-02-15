@@ -1,4 +1,4 @@
-package net.tvidal.kafka.explorer.model
+package uk.tvidal.kafka.explorer.model
 
 import java.time.Instant
 

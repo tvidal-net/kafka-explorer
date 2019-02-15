@@ -1,7 +1,7 @@
-package net.tvidal.kafka.explorer
+package uk.tvidal.kafka.explorer
 
-import net.tvidal.kafka.explorer.view.ConnectView
 import tornadofx.*
+import uk.tvidal.kafka.explorer.view.ConnectView
 
 class KafkaExplorerApp : App(ConnectView::class, Styles::class) {
 

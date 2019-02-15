@@ -1,10 +1,10 @@
-package net.tvidal.kafka.explorer.view
+package uk.tvidal.kafka.explorer.view
 
 import javafx.scene.input.KeyCode.ESCAPE
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.KeyEvent.KEY_PRESSED
-import net.tvidal.kafka.explorer.model.Broker
 import tornadofx.*
+import uk.tvidal.kafka.explorer.model.Broker
 
 class MainView : View("Kafka Explorer") {
 

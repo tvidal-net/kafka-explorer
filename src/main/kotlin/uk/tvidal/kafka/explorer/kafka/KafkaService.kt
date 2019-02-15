@@ -1,6 +1,6 @@
-package net.tvidal.kafka.explorer.kafka
+package uk.tvidal.kafka.explorer.kafka
 
-import net.tvidal.kafka.explorer.model.KafkaOffset
+import uk.tvidal.kafka.explorer.model.KafkaOffset
 
 interface KafkaService : AutoCloseable {
 

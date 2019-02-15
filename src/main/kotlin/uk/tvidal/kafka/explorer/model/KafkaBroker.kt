@@ -1,4 +1,4 @@
-package net.tvidal.kafka.explorer.model
+package uk.tvidal.kafka.explorer.model
 
 data class KafkaBroker(
     val host: String,

@@ -1,4 +1,4 @@
-package net.tvidal.kafka.explorer.view
+package uk.tvidal.kafka.explorer.view
 
 import javafx.util.Duration
 import tornadofx.*

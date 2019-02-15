@@ -1,4 +1,4 @@
-package net.tvidal.kafka.explorer.codec
+package uk.tvidal.kafka.explorer.codec
 
 import org.apache.kafka.common.serialization.Deserializer
 import org.apache.kafka.common.serialization.Serde

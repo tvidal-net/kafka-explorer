@@ -1,4 +1,4 @@
-package net.tvidal.kafka.explorer
+package uk.tvidal.kafka.explorer
 
 import tornadofx.*
 

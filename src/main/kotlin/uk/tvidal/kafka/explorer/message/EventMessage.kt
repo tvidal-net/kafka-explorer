@@ -1,4 +1,4 @@
-package net.tvidal.kafka.explorer.message
+package uk.tvidal.kafka.explorer.message
 
 import tornadofx.*
 import tornadofx.EventBus.RunOn.ApplicationThread

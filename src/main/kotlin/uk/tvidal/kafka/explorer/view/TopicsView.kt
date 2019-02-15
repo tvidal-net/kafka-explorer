@@ -1,7 +1,7 @@
-package net.tvidal.kafka.explorer.view
+package uk.tvidal.kafka.explorer.view
 
-import net.tvidal.kafka.explorer.Styles.Companion.borderPadding
 import tornadofx.*
+import uk.tvidal.kafka.explorer.Styles.Companion.borderPadding
 
 class TopicsView : View() {
 
