@@ -1,9 +1,12 @@
 package uk.tvidal.kafka.explorer
 
+import javafx.scene.image.Image
 import tornadofx.*
 import uk.tvidal.kafka.explorer.view.TopicsView
 
-class KafkaExplorer : App(TopicsView::class, Styles::class) {
+private val icon = Image("/kafka.png")
+
+class KafkaExplorer : App(icon, TopicsView::class, Styles::class) {
 
     init {
         reloadStylesheetsOnFocus()
