@@ -18,6 +18,7 @@ class TopicsView : View("Kafka Explorer") {
 
         left = topics()
         center = stream()
+        bottom = label(kafka.statusMessageProperty)
     }
 
     init {
