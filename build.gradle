@@ -1,6 +1,4 @@
 buildscript {
-    ext.kotlin_version = '1.3.0'
-
     repositories {
         jcenter()
     }
@@ -10,7 +8,7 @@ buildscript {
     }
 }
 
-group 'net.tvidal'
+group 'uk.tvidal'
 version '0.1-SNAPSHOT'
 
 repositories {
@@ -20,11 +18,12 @@ repositories {
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'idea'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         jvmTarget = project.targetCompatibility
     }
