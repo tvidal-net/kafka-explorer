@@ -2,11 +2,13 @@ package uk.tvidal.kafka.explorer
 
 import javafx.scene.image.Image
 import tornadofx.*
+import uk.tvidal.javafx.darkTheme
 import uk.tvidal.kafka.explorer.view.TopicsView
 
 class KafkaExplorer : App(Image("/kafka.png"), TopicsView::class) {
 
     init {
+        FX.stylesheets += darkTheme.toExternalForm()
         FX.stylesheets += style.toExternalForm()
         reloadStylesheetsOnFocus()
     }

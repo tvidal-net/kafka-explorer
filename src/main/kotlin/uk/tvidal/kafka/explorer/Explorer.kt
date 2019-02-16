@@ -7,7 +7,7 @@ fun threadFactory(nameFormat: String): ThreadFactory = object : ThreadFactory {
     private val counter = AtomicInteger()
     override fun newThread(command: Runnable): Thread {
         val count = counter.incrementAndGet()
-        val name = nameFormat.format(count)
+        val name = String.format(nameFormat, count)
         return Thread(command, name).apply {
             isDaemon = true
             setUncaughtExceptionHandler { _, e -> e.printStackTrace() }

@@ -47,8 +47,8 @@ dependencies {
     // Kafka
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: kafka_version
 
-    // Tornado FX
-    implementation group: 'no.tornado', name: 'tornadofx', version: tornadofx_version
+    // Java FX
+    implementation group: 'uk.tvidal', name: 'tvidal-javafx', version: tvidal_version
 
     // Tests
     testImplementation group: 'io.mockk', name: 'mockk', version: mockk_version

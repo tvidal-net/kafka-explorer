@@ -14,6 +14,7 @@ interface KafkaService : AutoCloseable {
 
     companion object {
         const val EMPTY_OFFSET = -1L
+        const val KAFKA_PORT = 9092
 
         val NoOp = object : KafkaService {
             override fun close() = Unit

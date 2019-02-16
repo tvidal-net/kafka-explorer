@@ -1,7 +1,13 @@
 package uk.tvidal.kafka.explorer.view
 
 import javafx.event.EventTarget
+import javafx.geometry.Pos.BASELINE_CENTER
+import javafx.scene.Scene
 import javafx.scene.input.KeyCode
+import javafx.scene.paint.Color
+import javafx.stage.Modality.APPLICATION_MODAL
+import javafx.stage.Stage
+import javafx.stage.StageStyle.UTILITY
 import tornadofx.*
 import uk.tvidal.kafka.explorer.controller.KafkaController
 import uk.tvidal.kafka.explorer.model.KafkaBroker
@@ -11,9 +17,20 @@ class TopicsView : AbstractView("Kafka Explorer") {
     val kafka: KafkaController by inject()
 
     override val root = borderpane {
-        setPrefSize(1024.0, 768.0)
+        setPrefSize(1600.0, 1200.0)
 
-        left = topics()
+        left = borderpane {
+            center = topics()
+            bottom = hbox(alignment = BASELINE_CENTER) {
+                padding = insets(16)
+                id = "connect-bar"
+                button("Connect") {
+                    action {
+                        replaceWith<ConnectView>()
+                    }
+                }
+            }
+        }
         center = stream()
         bottom = label(kafka.statusMessageProperty)
     }
@@ -35,6 +52,10 @@ class TopicsView : AbstractView("Kafka Explorer") {
 
     private fun EventTarget.stream() = listview(kafka.stream) {
 
+        items.onChange {
+            scrollToBottom()
+        }
+
         cellFormat {
             graphic = vbox {
                 hbox {
@@ -53,6 +74,7 @@ class TopicsView : AbstractView("Kafka Explorer") {
         setOnKeyReleased {
             if (it.code == KeyCode.ESCAPE) {
                 selectionModel.clearSelection()
+                scrollToBottom()
             }
         }
     }
