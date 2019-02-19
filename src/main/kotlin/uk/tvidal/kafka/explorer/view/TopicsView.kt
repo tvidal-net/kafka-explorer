@@ -63,7 +63,7 @@ class TopicsView : AbstractView("Kafka Explorer") {
                     it.key?.let { key -> text("(key: $key) ") }
                     fadedText(it.timestamp.toString())
                 }
-                text(it.value) {
+                contentText(it.value) {
                     wrappingWidthProperty().bind(
                         this@listview.widthProperty().minus(48)
                     )

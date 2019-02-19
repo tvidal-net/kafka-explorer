@@ -50,6 +50,10 @@ dependencies {
     // Java FX
     implementation group: 'uk.tvidal', name: 'tvidal-javafx', version: tvidal_version
 
+    // Logging
+    implementation group: 'uk.tvidal', name: 'tvidal-logging', version: tvidal_version
+    runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.2'
+
     // Tests
     testImplementation group: 'io.mockk', name: 'mockk', version: mockk_version
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit_version

@@ -1,0 +1,19 @@
+@import url('/css/dark_theme.css');
+
+.faded {
+    -fx-fill: derive(-fx-base, 25%);
+}
+
+.bold {
+    -fx-fill: orange;
+    -fx-font-weight: bold;
+}
+
+.cell .content {
+    -fx-fill: derive(-fx-base, 100%);
+    -fx-font-family: 'Courier';
+}
+
+#connect-bar {
+    -fx-background-color: black;
+}
