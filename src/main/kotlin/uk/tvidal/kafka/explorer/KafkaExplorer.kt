@@ -7,6 +7,7 @@ import uk.tvidal.kafka.explorer.view.TopicsView
 class KafkaExplorer : App(Image(kafkaLogo.toExternalForm()), TopicsView::class) {
 
     init {
+        System.setProperty("log.level", "WARN")
         FX.stylesheets += styleSheet.toExternalForm()
         reloadStylesheetsOnFocus()
     }
