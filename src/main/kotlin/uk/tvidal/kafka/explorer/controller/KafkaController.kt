@@ -25,10 +25,10 @@ class KafkaController : Controller() {
     val brokerProperty = SimpleObjectProperty<KafkaBroker>()
     var broker: KafkaBroker? by brokerProperty
 
-    val topics = observableList<KafkaTopicInfo>()
+    val topics = observableListOf<KafkaTopicInfo>()
 
     val topic = SimpleObjectProperty<KafkaTopicInfo>()
-    val stream = observableList<KafkaMessage>()
+    val stream = observableListOf<KafkaMessage>()
 
     init {
         executor.scheduleAtFixedRate(::poll, delay, delay, MILLISECONDS)
@@ -73,7 +73,7 @@ class KafkaController : Controller() {
                 }
             }
             count += messages.size
-        } while (!messages.isEmpty())
+        } while (messages.isNotEmpty())
 
         if (count > 0) {
             val time = currentTimeMillis() - before

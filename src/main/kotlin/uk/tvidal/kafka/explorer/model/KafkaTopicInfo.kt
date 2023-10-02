@@ -1,6 +1,6 @@
 package uk.tvidal.kafka.explorer.model
 
-import sun.misc.ASCIICaseInsensitiveComparator.CASE_INSENSITIVE_ORDER
+import java.lang.String.CASE_INSENSITIVE_ORDER
 
 data class KafkaTopicInfo(
     val name: String,
